@@ -5,6 +5,8 @@ import com.epam.zt.testing.dao.UserDao;
 import com.epam.zt.testing.model.Role;
 import com.epam.zt.testing.model.User;
 
+import java.util.List;
+
 import static com.epam.zt.testing.dao.DaoFactory.Type.JDBC;
 
 public class UserService {
@@ -60,5 +62,13 @@ public class UserService {
         UserDao userDao = factory.getUserDao();
         userDao.deleteChild(user);
         userDao.close();
+    }
+
+    public static List<User> findAll() {
+        DaoFactory factory = DaoFactory.getInstance(JDBC);
+        UserDao userDao = factory.getUserDao();
+        List<User> users = userDao.findAll();
+        userDao.close();
+        return users;
     }
 }

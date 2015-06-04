@@ -4,11 +4,14 @@
 <%--@elvariable id="roles" type="com.epam.zt.testing.action.GetUserCategoryAction"--%>
 <%--@elvariable id="foundUser" type="com.epam.zt.testing.model.User"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<fmt:setBundle basename="messages"/>
 <head>
     <link href="../../lib/bootstrap/css/cerulean-bootstrap.min.css" rel="stylesheet"/>
     <link href="../../lib/css/category.css" rel="stylesheet"/>
+    <link href="../../lib/css/main.css" rel="stylesheet"/>
     <script src="../../lib/bootstrap/jquery-1.11.3.min.js"></script>
     <script src="../../lib/bootstrap/js/bootstrap.min.js"></script>
     <title>Testing - Users</title>
@@ -90,6 +93,40 @@
             </form>
         </div>
     </c:if>
+
+
+    <div>
+        <%--@elvariable id="exist_users" type="com.epam.zt.testing.action.getusercategoryaction"--%>
+        <c:if test="${exist_users=='no'}">
+            <div class="error"><fmt:message key="no_users"/></div>
+        </c:if>
+        <c:if test="${exist_users=='yes'}">
+            <div class="col-lg-12">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Last name</th>
+                        <th>Fisrt name</th>
+                        <th>Email</th>
+                        <th>Login</th>
+                        <th>Register date</th>
+                    </tr>
+                    </thead>
+                    <c:forEach var="user" items="users" begin="0" end="9">
+                        <tr>
+                            <td><a href="<c:url value = '${pageContext.request.contextPath}/testing/startTest?test_id=${user.id}' />">${user.lastName}</a></td>
+                            <td><a href="<c:url value = '${pageContext.request.contextPath}/testing/startTest?test_id=${user.id}' />">${user.firstName}</a></td>
+                            <td>${user.email}</td>
+                            <td>${user.login}</td>
+                            <td>${user.registerDate}</td>
+                        </tr>
+                    </c:forEach>
+                    <tr>
+                    </tr>
+                </table>
+            </div>
+        </c:if>
+    </div>
 </div>
 </body>
 </html>

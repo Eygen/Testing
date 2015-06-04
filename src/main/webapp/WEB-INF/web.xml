@@ -39,15 +39,6 @@
         <url-pattern>/testing/*</url-pattern>
     </filter-mapping>
 
-    <!--<filter>
-        <filter-name>TimeFilter</filter-name>
-        <filter-class>com.epam.zt.testing.filter.TimeFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>TimeFilter</filter-name>
-        <url-pattern>/testing/*</url-pattern>
-    </filter-mapping>
--->
     <filter>
         <filter-name>UserFilter</filter-name>
         <filter-class>com.epam.zt.testing.filter.UserFilter</filter-class>
@@ -57,9 +48,14 @@
         <url-pattern>/testing/*</url-pattern>
     </filter-mapping>
 
-    <!--<error-page>
+    <error-page>
         <error-code>404</error-code>
-        <location>/testing/404.jsp</location>
-    </error-page>-->
+        <location>/404.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/500.jsp</location>
+    </error-page>
 
 </web-app>

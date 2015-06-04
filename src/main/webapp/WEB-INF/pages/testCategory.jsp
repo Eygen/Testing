@@ -12,7 +12,7 @@
 <head>
     <link href="../../lib/bootstrap/css/cerulean-bootstrap.min.css" rel="stylesheet"/>
     <link href="../../lib/css/category.css" rel="stylesheet"/>
-    <link href="../../lib/css/testCategory.css" rel="stylesheet"/>
+    <link href="../../lib/css/main.css" rel="stylesheet"/>
     <link href="../../lib/font-awesome/css/font-awesome.min.css"/>
     <script src="../../lib/bootstrap/jquery-1.11.3.min.js"></script>
     <script src="../../lib/bootstrap/js/bootstrap.min.js"></script>
