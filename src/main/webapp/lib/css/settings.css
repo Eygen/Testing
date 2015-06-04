@@ -1,0 +1,15 @@
+.container, .page-header {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.error {
+    color: #ff0000;
+    margin-top: 10px;
+}
+
+.success {
+    font-size: 20px;
+    color: #228b22;
+}
+

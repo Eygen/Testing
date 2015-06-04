@@ -1,0 +1,12 @@
+.container, .page-header {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+h2 {
+    text-align: center;
+}
+
+.activate {
+    background-color: #022f5a;
+}

@@ -1,0 +1,26 @@
+.container, .page-header {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.empty {
+    margin-top: 50px;
+}
+
+.btn-primary {
+    margin-top: 20px;
+}
+
+.wrapper {
+    font-size: 16px;
+    margin: 10px 20px 30px 20px;
+}
+
+.question {
+    margin-bottom: 20px;
+}
+
+.btn-danger {
+    margin-left: 20px;
+}
+
