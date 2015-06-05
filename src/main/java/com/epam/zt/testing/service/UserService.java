@@ -71,4 +71,12 @@ public class UserService {
         userDao.close();
         return users;
     }
+
+    public static List<User> findSublist(int rowcount, int firstrow) {
+        DaoFactory factory = DaoFactory.getInstance(JDBC);
+        UserDao userDao = factory.getUserDao();
+        List<User> users = userDao.findSublist(rowcount, firstrow);
+        userDao.close();
+        return users;
+    }
 }

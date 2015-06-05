@@ -45,6 +45,7 @@ public class ActionFactory {
         actions.put("GET/adminSettings", new GetUpdateAdminAction());
         actions.put("POST/adminSettings", new PostUpdateAdminAction());
         actions.put("GET/userCategory", new GetUserCategoryAction());
+        actions.put("GET/pageUserCategory", new PageUserCategoryAction());
         actions.put("POST/userCategoryFind", new UserCategoryFindAction());
         actions.put("POST/userCategoryChangeRole", new UserCategoryChangeRoleAction());
         actions.put("POST/userCategoryDelete", new UserCategoryDeleteAction());

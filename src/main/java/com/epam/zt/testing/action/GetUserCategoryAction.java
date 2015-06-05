@@ -1,8 +1,6 @@
 package com.epam.zt.testing.action;
 
-import com.epam.zt.testing.model.Role;
 import com.epam.zt.testing.model.User;
-import com.epam.zt.testing.service.RoleService;
 import com.epam.zt.testing.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,17 +12,31 @@ public class GetUserCategoryAction implements Action {
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
-        List<Role> roles = RoleService.findAll();
-        List<User> users = UserService.findAll();
-        if (users.size() == 0) {
-            req.setAttribute("exist_users", "no");
-        } else {
-            req.setAttribute("exist_users", "yes");
-            List<User> subList = users.subList(0, 9);
-            req.setAttribute("subList", subList);
-            req.getSession().setAttribute("users", users);
+        if (req.getParameter("page") == null) {
+            int firstrow = 0;
+            int rowcount = 3;
+            List<User> users = UserService.findSublist(rowcount, firstrow);
+            if (users.size() == 0) {
+                req.getSession().setAttribute("exist_users", "no");
+            } else {
+                if (users.size() == rowcount) {
+                    List<User> checkNext = UserService.findSublist(1, rowcount);
+
+                    if (checkNext.size() != 0) {
+                        req.setAttribute("next", "yes");
+                    } else {
+                        req.setAttribute("next", "no");
+                    }
+                } else {
+                    req.setAttribute("next", "no");
+                }
+                req.setAttribute("prev", "no");
+                req.getSession().setAttribute("exist_users", "yes");
+                req.getSession().setAttribute("firstrow", firstrow);
+                req.getSession().setAttribute("rowcount", rowcount);
+                req.getSession().setAttribute("users", users);
+            }
         }
-        req.getSession().setAttribute("roles", roles);
         return userCategory;
     }
 }

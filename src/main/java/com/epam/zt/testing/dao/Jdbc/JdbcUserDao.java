@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static com.epam.zt.testing.dao.Jdbc.SecureUtil.passwordToMd5;
@@ -24,6 +26,7 @@ public class JdbcUserDao extends JdbcBaseDao<User> implements UserDao {
     public static final String EXIST_LOGIN = "SELECT * FROM USER WHERE DELETED = FALSE AND login = ?";
     public static final String FIND_BY_LOGIN_PASSWORD = "SELECT * FROM USER WHERE DELETED = FALSE AND login = ? AND password = ?";
     private static final String FIND_BY_NAME = "SELECT * FROM USER WHERE deleted = FALSE AND lastname = ? AND firstname = ?";
+    private static final String FIND_SUBLIST = "SELECT * FROM USER WHERE deleted = FALSE ORDER BY id LIMIT ? OFFSET ?";
 
     public JdbcUserDao(Connection connection) {
         super(connection);
@@ -175,6 +178,25 @@ public class JdbcUserDao extends JdbcBaseDao<User> implements UserDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+    }
+
+    @Override
+    public List<User> findSublist(int rowcount, int firstrow) throws DaoException {
+        List<User> users = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(FIND_SUBLIST);
+            statement.setInt(1, rowcount);
+            statement.setInt(2, firstrow);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                users.add(parseResult(result));
+            }
+            result.close();
+            statement.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return users;
     }
 
 }

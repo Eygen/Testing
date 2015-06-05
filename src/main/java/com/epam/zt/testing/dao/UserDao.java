@@ -3,6 +3,8 @@ package com.epam.zt.testing.dao;
 import com.epam.zt.testing.model.Role;
 import com.epam.zt.testing.model.User;
 
+import java.util.List;
+
 public interface UserDao extends Dao<User> {
     Role findUser(String login, String password) throws DaoException;
 
@@ -13,4 +15,6 @@ public interface UserDao extends Dao<User> {
     User findByName(String lastName, String firstName) throws DaoException;
 
     void deleteChild(User user) throws DaoException;
+
+    List<User> findSublist(int rowcount, int firstrow) throws DaoException;
 }
