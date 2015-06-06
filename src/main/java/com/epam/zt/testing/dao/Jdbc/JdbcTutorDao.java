@@ -17,7 +17,7 @@ public class JdbcTutorDao extends JdbcBaseDao<Tutor> implements TutorDao {
     private static final Logger logger = LoggerFactory.getLogger(JdbcTutorDao.class);
     private static final String FIND = "SELECT * FROM USER WHERE role_id = (SELECT id FROM ROLE WHERE name = 'tutor') AND deleted = FALSE";
     private static final String FIND_BY_NAME = FIND + " AND lastname = ? AND firstname = ?";
-    private static final String FIND_BY_ID = FIND + " AND id = ?";
+    private static final String FIND_BY_ID = "SELECT * FROM USER WHERE id = ?";
     private static final String FIND_ALL = FIND + " ORDER BY id";
     public static final String FIND_BY_LOGIN_PASSWORD = "SELECT * FROM USER WHERE login = ? AND password = ?";
     private static final String DELETE = "UPDATE USER SET deleted = TRUE WHERE id = ?";

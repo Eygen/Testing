@@ -53,14 +53,23 @@
                 </form>
             </div>
         </div>
-        <div class="success">
-            ${addSuccess}
-            ${delete}
-        </div>
-        <c:if test="${found=='not_found'}">
-            <div class="error"><fmt:message key="no_group"/> </div>
-        </c:if>
     </div>
+    <div class="col-lg-12">
+        <div class="success">
+            <c:if test="${addSuccess==1}">
+                <fmt:message key="group_created"/>
+            </c:if>
+            <c:if test="${delete==1}">
+                <fmt:message key="group_deleted"/>
+            </c:if>
+        </div>
+        <div class="error">
+            <c:if test="${found=='not_found'}">
+                <fmt:message key="no_group"/>
+            </c:if>
+        </div>
+    </div>
+
     <c:if test="${found == 'found'}">
         <div class="col-lg-12">
             <table class="table table-striped">

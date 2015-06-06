@@ -1,26 +1,26 @@
 package com.epam.zt.testing.action;
 
-import com.epam.zt.testing.model.User;
-import com.epam.zt.testing.service.UserService;
+import com.epam.zt.testing.model.Subject;
+import com.epam.zt.testing.service.SubjectService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class GetUserCategoryAction implements Action {
-    private ActionResult userCategory = new ActionResult("userCategory");
+public class GetSubjectCategoryAction implements Action {
+    private ActionResult subject = new ActionResult("subjectCategory");
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
         if (req.getParameter("page") == null) {
             int firstrow = 0;
             int rowcount = 3;
-            List<User> users = UserService.findSublist(rowcount, firstrow);
-            if (users.size() == 0) {
-                req.getSession().setAttribute("exist_users", "no");
+            List<Subject> subjects = SubjectService.findSublist(rowcount, firstrow);
+            if (subjects.size() == 0) {
+                req.getSession().setAttribute("exist_subjects", "no");
             } else {
-                if (users.size() == rowcount) {
-                    List<User> checkNext = UserService.findSublist(1, rowcount);
+                if (subjects.size() == rowcount) {
+                    List<Subject> checkNext = SubjectService.findSublist(1, rowcount);
 
                     if (checkNext.size() != 0) {
                         req.getSession().setAttribute("next", "yes");
@@ -31,16 +31,16 @@ public class GetUserCategoryAction implements Action {
                     req.getSession().setAttribute("next", "no");
                 }
                 req.getSession().setAttribute("prev", "no");
-                req.getSession().setAttribute("exist_users", "yes");
+                req.getSession().setAttribute("exist_subjects", "yes");
                 req.getSession().setAttribute("firstrow", firstrow);
                 req.getSession().setAttribute("rowcount", rowcount);
-                req.getSession().setAttribute("users", users);
+                req.getSession().setAttribute("subjects", subjects);
             }
         }
         String delete = req.getParameter("delete");
         req.setAttribute("delete", delete);
-        String change = req.getParameter("roleChange");
-        req.setAttribute("roleChange", change);
-        return userCategory;
+        String success = req.getParameter("addSuccess");
+        req.setAttribute("addSuccess", success);
+        return subject;
     }
 }

@@ -49,12 +49,12 @@ public class UserService {
         userDao.close();
     }
 
-    public static User findByName(String lastName, String firstName) {
+    public static List<User> findByName(String lastName, String firstName) {
         DaoFactory factory = DaoFactory.getInstance(JDBC);
         UserDao userDao = factory.getUserDao();
-        User user = userDao.findByName(lastName, firstName);
+        List<User> users = userDao.findByName(lastName, firstName);
         userDao.close();
-        return user;
+        return users;
     }
 
     public static void deleteChild(User user) {
@@ -78,5 +78,30 @@ public class UserService {
         List<User> users = userDao.findSublist(rowcount, firstrow);
         userDao.close();
         return users;
+    }
+
+
+    public static List<User> findByLastname(String lastName) {
+        DaoFactory factory = DaoFactory.getInstance(JDBC);
+        UserDao userDao = factory.getUserDao();
+        List<User> users = userDao.findByLastname(lastName);
+        userDao.close();
+        return users;
+    }
+
+    public static List<User> findByFirstname(String firstName) {
+        DaoFactory factory = DaoFactory.getInstance(JDBC);
+        UserDao userDao = factory.getUserDao();
+        List<User> users = userDao.findByFirstname(firstName);
+        userDao.close();
+        return users;
+    }
+
+    public static User findById(int id) {
+        DaoFactory factory = DaoFactory.getInstance(JDBC);
+        UserDao userDao = factory.getUserDao();
+        User user = userDao.findById(id);
+        userDao.close();
+        return user;
     }
 }

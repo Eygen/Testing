@@ -19,14 +19,16 @@ public class JdbcUserDao extends JdbcBaseDao<User> implements UserDao {
     private static final Logger logger = LoggerFactory.getLogger(JdbcUserDao.class);
     private static final String FIND = "SELECT * FROM USER WHERE role_id = (SELECT id FROM ROLE WHERE name = 'user')";
     private static final String FIND_ALL = FIND + " ORDER BY id";
-    private static final String FIND_BY_ID = FIND + " AND id = ?";
+    private static final String FIND_BY_ID = "SELECT * FROM USER WHERE id = ?";
     private static final String CREATE = "INSERT INTO USER VALUES (DEFAULT, ?, FALSE, ?, ?, ?, ?, ?, ?, ?, NULL)";
     private static final String UPDATE = "UPDATE USER SET role_id = ? WHERE id = ?";
     private static final String DELETE = "DELETE FROM USER WHERE id = ?";
     public static final String EXIST_LOGIN = "SELECT * FROM USER WHERE DELETED = FALSE AND login = ?";
     public static final String FIND_BY_LOGIN_PASSWORD = "SELECT * FROM USER WHERE DELETED = FALSE AND login = ? AND password = ?";
-    private static final String FIND_BY_NAME = "SELECT * FROM USER WHERE deleted = FALSE AND lastname = ? AND firstname = ?";
+    private static final String FIND_BY_NAME = "SELECT * FROM USER WHERE DELETED = FALSE AND UPPER(LASTNAME) LIKE UPPER(?) AND UPPER(FIRSTNAME) LIKE UPPER(?)";
     private static final String FIND_SUBLIST = "SELECT * FROM USER WHERE deleted = FALSE ORDER BY id LIMIT ? OFFSET ?";
+    private static final String FIND_BY_FIRSTNAME = "SELECT * FROM USER WHERE DELETED = FALSE AND UPPER(firstname) LIKE UPPER(?)";
+    private static final String FIND_BY_LASTNAME = "SELECT * FROM USER WHERE DELETED = FALSE AND UPPER(lastname) LIKE UPPER(?)";
 
     public JdbcUserDao(Connection connection) {
         super(connection);
@@ -147,22 +149,24 @@ public class JdbcUserDao extends JdbcBaseDao<User> implements UserDao {
     }
 
     @Override
-    public User findByName(String lastName, String firstName) throws DaoException {
-        User user = null;
+    public List<User> findByName(String lastName, String firstName) throws DaoException {
+        List<User> users = new ArrayList<>();
         try {
+            lastName = "%" + lastName + "%";
+            firstName = "%" + firstName + "%";
             PreparedStatement statement = connection.prepareStatement(FIND_BY_NAME);
             statement.setString(1, lastName);
             statement.setString(2, firstName);
             ResultSet result = statement.executeQuery();
-            if (result.next()) {
-                user = parseResult(result);
+            while (result.next()) {
+                users.add(parseResult(result));
             }
             result.close();
             statement.close();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
-        return user;
+        return users;
     }
 
     @Override
@@ -187,6 +191,44 @@ public class JdbcUserDao extends JdbcBaseDao<User> implements UserDao {
             PreparedStatement statement = connection.prepareStatement(FIND_SUBLIST);
             statement.setInt(1, rowcount);
             statement.setInt(2, firstrow);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                users.add(parseResult(result));
+            }
+            result.close();
+            statement.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return users;
+    }
+
+    @Override
+    public List<User> findByLastname(String lastName) throws DaoException {
+        List<User> users = new ArrayList<>();
+        try {
+            lastName = "%" + lastName + "%";
+            PreparedStatement statement = connection.prepareStatement(FIND_BY_LASTNAME);
+            statement.setString(1, lastName);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                users.add(parseResult(result));
+            }
+            result.close();
+            statement.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return users;
+    }
+
+    @Override
+    public List<User> findByFirstname(String firstName) throws DaoException {
+        List<User> users = new ArrayList<>();
+        try {
+            firstName = "%" + firstName + "%";
+            PreparedStatement statement = connection.prepareStatement(FIND_BY_FIRSTNAME);
+            statement.setString(1, firstName);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 users.add(parseResult(result));

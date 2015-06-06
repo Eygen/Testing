@@ -12,9 +12,13 @@ public interface UserDao extends Dao<User> {
 
     void close();
 
-    User findByName(String lastName, String firstName) throws DaoException;
+    List<User> findByName(String lastName, String firstName) throws DaoException;
 
     void deleteChild(User user) throws DaoException;
 
     List<User> findSublist(int rowcount, int firstrow) throws DaoException;
+
+    List<User> findByLastname(String lastName) throws DaoException;
+
+    List<User> findByFirstname(String firstName) throws DaoException;
 }

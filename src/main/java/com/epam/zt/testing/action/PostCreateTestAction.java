@@ -17,7 +17,7 @@ public class PostCreateTestAction implements Action {
         Tutor tutor = (Tutor) req.getSession().getAttribute("user");
         String subjectName = req.getParameter("subject");
         String questionAmount = req.getParameter("amountQuestions");
-        Subject subject = SubjectService.findByName(subjectName);
+        Subject subject = SubjectService.findByFullName(subjectName);
         Test test = new Test();
         test.setSubject(subject);
         test.setQuestionAmount(Integer.parseInt(questionAmount));

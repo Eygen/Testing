@@ -27,12 +27,12 @@ public class SubjectService {
         return subjects;
     }
 
-    public static Subject findByName(String name) {
+    public static List<Subject> findByName(String name) {
         DaoFactory factory = DaoFactory.getInstance(JDBC);
         SubjectDao subjectDao = factory.getSubjectDao();
-        Subject subject = subjectDao.findByName(name);
+        List<Subject> subjects = subjectDao.findByName(name);
         subjectDao.close();
-        return subject;
+        return subjects;
     }
 
     public static void deleteSubject(Subject subject) {
@@ -48,5 +48,21 @@ public class SubjectService {
         Subject subject = subjectDao.findById(id);
         subjectDao.close();
         return subject;
+    }
+
+    public static Subject findByFullName(String name) {
+        DaoFactory factory = DaoFactory.getInstance(JDBC);
+        SubjectDao subjectDao = factory.getSubjectDao();
+        Subject subject = subjectDao.findByFullName(name);
+        subjectDao.close();
+        return subject;
+    }
+
+    public static List<Subject> findSublist(int rowcount, int firstrow) {
+        DaoFactory factory = DaoFactory.getInstance(JDBC);
+        SubjectDao subjectDao = factory.getSubjectDao();
+        List<Subject> subjects = subjectDao.findSublist(rowcount, firstrow);
+        subjectDao.close();
+        return subjects;
     }
 }

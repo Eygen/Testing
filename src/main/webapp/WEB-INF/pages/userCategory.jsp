@@ -2,13 +2,16 @@
 <%--@elvariable id="delete" type="com.epam.zt.testing.action.usercategorydeleteaction"--%>
 <%--@elvariable id="found" type="com.epam.zt.testing.action.usercategoryfindaction"--%>
 <%--@elvariable id="roles" type="com.epam.zt.testing.action.GetUserCategoryAction"--%>
-<%--@elvariable id="foundUser" type="com.epam.zt.testing.model.User"--%>
+<%--@elvariable id="foundUsers" type="com.epam.zt.testing.model.User"--%>
 <%--@elvariable id="firstrow" type="com.epam.zt.testing.action.getusercategoryaction"--%>
 <%--@elvariable id="exist_users" type="com.epam.zt.testing.action.getusercategoryaction"--%>
 <%--@elvariable id="rowcount" type="com.epam.zt.testing.action.GetUserCategoryAction"--%>
 <%--@elvariable id="prev" type="com.epam.zt.testing.action.getusercategoryaction"--%>
 <%--@elvariable id="next" type="com.epam.zt.testing.action.GetUserCategoryAction"--%>
 <%--@elvariable id="users" type="com.epam.zt.testing.action.GetUserCategoryAction"--%>
+<%--@elvariable id="menu" type="com.epam.zt.testing.action.usercategoryfindaction"--%>
+<%--@elvariable id="roleError" type="com.epam.zt.testing.action.usercategorychangeroleaction"--%>
+<%--@elvariable id="deleteError" type="com.epam.zt.testing.action.usercategorydeleteaction"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -32,23 +35,42 @@
         <form role="search" action="<c:url value='${pageContext.request.contextPath}/testing/userCategoryFind' />"
               method="post">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="Last Name" name="last_name" required>
+                <input type="text" class="form-control" placeholder="Last Name" name="last_name">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="First Name" name="first_name" required>
+                <input type="text" class="form-control" placeholder="First Name" name="first_name">
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary"><fmt:message key="search"/></button>
             </div>
         </form>
-        <div class="success">
-            ${roleChange}
-            ${delete}
-        </div>
-        <c:if test="${found=='not_found'}">
-            <div class="error"><fmt:message key="no_user"/></div>
-        </c:if>
     </div>
+
+    <div class="col-lg-12">
+        <div class="success">
+            <c:if test="${roleChange==1}">
+                <fmt:message key="role_changed"/>
+            </c:if>
+            <c:if test="${delete==1}">
+                <fmt:message key="user_deleted"/>
+            </c:if>
+        </div>
+        <div class="error">
+            <c:if test="${deleteError==1}">
+                <fmt:message key="delete_user_error"/>
+            </c:if>
+            <c:if test="${roleError==1}">
+                <fmt:message key="role_user_error"/>
+            </c:if>
+            <c:if test="${found=='not_found'}">
+                <fmt:message key="no_user"/>
+            </c:if>
+            <c:if test="${found=='empty'}">
+                <fmt:message key="empty_entries"/>
+            </c:if>
+        </div>
+    </div>
+
     <c:if test="${found == 'found'}">
         <div class="col-lg-12">
             <table class="table table-striped">
@@ -58,46 +80,70 @@
                     <th><fmt:message key="first_name"/></th>
                     <th><fmt:message key="email"/></th>
                     <th><fmt:message key="login"/></th>
-                    <th><fmt:message key="registerDate"/></th>
+                    <th><fmt:message key="register_date"/></th>
                     <th><fmt:message key="role"/></th>
                 </tr>
                 </thead>
-                <tr>
-                    <td>${foundUser.lastName}</td>
-                    <td>${foundUser.firstName}</td>
-                    <td>${foundUser.email}</td>
-                    <td>${foundUser.login}</td>
-                    <td>${foundUser.registerDate}</td>
-                    <td>${foundUser.role.name}</td>
-                </tr>
+                <c:forEach var="someone" items="${foundUsers}">
+                    <c:choose>
+                        <c:when test="${menu==1}">
+                            <tr>
+                                <td>${someone.lastName}</td>
+                                <td>${someone.firstName}</td>
+                                <td>${someone.email}</td>
+                                <td>${someone.login}</td>
+                                <td>${someone.registerDate}</td>
+                                <td>${someone.role.name}</td>
+                            </tr>
+                        </c:when>
+                        <c:otherwise>
+                            <tr>
+                                <td>
+                                    <a href="<c:url value = '${pageContext.request.contextPath}/testing/personDetails?person_id=${someone.id}' />">${someone.lastName}</a>
+                                </td>
+                                <td>
+                                    <a href="<c:url value = '${pageContext.request.contextPath}/testing/personDetails?person_id=${someone.id}' />">${someone.firstName}</a>
+                                </td>
+                                <td>${someone.email}</td>
+                                <td>${someone.login}</td>
+                                <td>${someone.registerDate}</td>
+                                <td>${someone.role.name}</td>
+                            </tr>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
             </table>
         </div>
-        <div class="col-lg-5">
-            <form class="form-inline well" role="form"
-                  action="<c:url value='${pageContext.request.contextPath}/testing/userCategoryChangeRole' />"
-                  method="post">
-                <div class="form-group">
-                    <label for="select" class="col-lg-5 control-label">New role</label>
 
-                    <div class="col-lg-6">
-                        <select class="form-control" id="select" name="newRole">
-                            <c:forEach var="role" items="${roles}">
-                                <option>${role.name}</option>
-                            </c:forEach>
-                        </select>
+        <c:if test="${menu==1}">
+            <div class="col-lg-5">
+                <form class="form-inline well" role="form"
+                      action="<c:url value='${pageContext.request.contextPath}/testing/userCategoryChangeRole' />"
+                      method="post">
+                    <div class="form-group">
+                        <label for="select" class="col-lg-5 control-label">New role</label>
+
+                        <div class="col-lg-6">
+                            <select class="form-control" id="select" name="newRole">
+                                <c:forEach var="role" items="${roles}">
+                                    <option>${role.name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-info"><fmt:message key="changeRole"/></button>
-                </div>
-            </form>
-            <form role="form" action="<c:url value='${pageContext.request.contextPath}/testing/userCategoryDelete' />"
-                  method="post">
-                <div class="form-group">
-                    <button type="submit" class="btn btn-info"><fmt:message key="delete"/></button>
-                </div>
-            </form>
-        </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-info"><fmt:message key="change_role"/></button>
+                    </div>
+                </form>
+                <form role="form"
+                      action="<c:url value='${pageContext.request.contextPath}/testing/userCategoryDelete' />"
+                      method="post">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-info"><fmt:message key="delete"/></button>
+                    </div>
+                </form>
+            </div>
+        </c:if>
     </c:if>
 
 
@@ -107,6 +153,7 @@
         </c:if>
         <c:if test="${exist_users=='yes'}">
             <div class="col-lg-12">
+                <h3><fmt:message key="all_users"/></h3>
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -114,7 +161,7 @@
                         <th><fmt:message key="first_name"/></th>
                         <th><fmt:message key="email"/></th>
                         <th><fmt:message key="login"/></th>
-                        <th><fmt:message key="registerDate"/></th>
+                        <th><fmt:message key="register_date"/></th>
                         <th><fmt:message key="role"/></th>
                     </tr>
                     </thead>

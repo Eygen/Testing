@@ -45,7 +45,8 @@ public class ActionFactory {
         actions.put("GET/adminSettings", new GetUpdateAdminAction());
         actions.put("POST/adminSettings", new PostUpdateAdminAction());
         actions.put("GET/userCategory", new GetUserCategoryAction());
-        actions.put("GET/pageUserCategory", new PageUserCategoryAction());
+        actions.put("GET/pageUserCategory", new UserCategoryPageAction());
+        actions.put("GET/personDetails", new UserCategoryDetailsAction());
         actions.put("POST/userCategoryFind", new UserCategoryFindAction());
         actions.put("POST/userCategoryChangeRole", new UserCategoryChangeRoleAction());
         actions.put("POST/userCategoryDelete", new UserCategoryDeleteAction());
@@ -53,10 +54,12 @@ public class ActionFactory {
         actions.put("POST/groupCategoryFind", new GroupCategoryFindAction());
         actions.put("POST/groupCategoryDelete", new GroupCategoryDeleteAction());
         actions.put("POST/groupCategoryAdd", new GroupCategoryAddAction());
-        actions.put("GET/subjectCategory", new GetSubjectCategoryAddAction());
+        actions.put("GET/subjectCategory", new GetSubjectCategoryAction());
+        actions.put("GET/pageSubjectCategory", new SubjectCategoryPageAction());
+        actions.put("GET/subjectDetails", new SubjectCategoryDetailsAction());
         actions.put("POST/subjectCategoryFind", new SubjectCategoryFindAction());
         actions.put("POST/subjectCategoryDelete", new SubjectCategoryDeleteAction());
-        actions.put("POST/subjectCategoryAdd", new PostSubjectCategoryAddAction());
+        actions.put("POST/subjectCategoryAdd", new SubjectCategoryAddAction());
         actions.put("GET/testCategory", new GetTestCategoryAction());
         actions.put("POST/testCategoryFindBySubject", new TestCategoryFindBySubjectAction());
         actions.put("POST/testCategoryFindByStudent", new TestCategoryFindByStudentAction());

@@ -15,7 +15,7 @@ public class TestCategoryFindBySubjectAction implements Action {
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
         String subjectName = req.getParameter("subjectName");
-        Subject subject = SubjectService.findByName(subjectName);
+        Subject subject = SubjectService.findByFullName(subjectName);
         if (subject == null) {
             req.setAttribute("subjectError", "No such subject!");
             return testCategory;

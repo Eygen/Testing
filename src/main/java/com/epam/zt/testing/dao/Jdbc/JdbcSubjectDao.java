@@ -18,13 +18,15 @@ import java.util.UUID;
 public class JdbcSubjectDao extends JdbcBaseDao<Subject> implements SubjectDao {
     private static final Logger logger = LoggerFactory.getLogger(JdbcSubjectDao.class);
     private static final String FIND = "SELECT * FROM SUBJECT";
-    private static final String FIND_BY_NAME = FIND + " WHERE name = ?";
+    private static final String FIND_BY_NAME = FIND + " WHERE UPPER(name) LIKE UPPER(?)";
     private static final String FIND_BY_TUTOR = FIND + " WHERE tutor_id = ?";
     private static final String FIND_BY_ID = FIND + " WHERE id = ?";
     private static final String FIND_ALL = FIND + " ORDER BY id";
     private static final String DELETE = "DELETE FROM SUBJECT WHERE id = ?";
     private static final String UPDATE = "UPDATE SUBJECT SET name = ? WHERE id = ?";
     private static final String CREATE = "INSERT INTO SUBJECT VALUES(DEFAULT, ?, ?, ?)";
+    private static final String FIND_BY_FULLNAME = FIND + " WHERE name = ?";
+    private static final String FIND_SUBLIST = "SELECT * FROM SUBJECT ORDER BY id LIMIT ? OFFSET ?";
 
     public JdbcSubjectDao(Connection connection) {
         super(connection);
@@ -111,10 +113,29 @@ public class JdbcSubjectDao extends JdbcBaseDao<Subject> implements SubjectDao {
     }
 
     @Override
-    public Subject findByName(String name) throws DaoException {
+    public List<Subject> findByName(String name) throws DaoException {
+        List<Subject> subjects = new ArrayList<>();
+        try {
+            name = "%" + name + "%";
+            PreparedStatement statement = connection.prepareStatement(FIND_BY_NAME);
+            statement.setString(1, name);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                subjects.add(parseResult(result));
+            }
+            result.close();
+            statement.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return subjects;
+    }
+
+    @Override
+    public Subject findByFullName(String name) throws DaoException {
         Subject subject = null;
         try {
-            PreparedStatement statement = connection.prepareStatement(FIND_BY_NAME);
+            PreparedStatement statement = connection.prepareStatement(FIND_BY_FULLNAME);
             statement.setString(1, name);
             ResultSet result = statement.executeQuery();
             if (result.next()) {
@@ -123,8 +144,27 @@ public class JdbcSubjectDao extends JdbcBaseDao<Subject> implements SubjectDao {
             result.close();
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DaoException(e);
         }
         return subject;
+    }
+
+    @Override
+    public List<Subject> findSublist(int rowcount, int firstrow) throws DaoException {
+        List<Subject> subjects = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(FIND_SUBLIST);
+            statement.setInt(1, rowcount);
+            statement.setInt(2, firstrow);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                subjects.add(parseResult(result));
+            }
+            result.close();
+            statement.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return subjects;
     }
 }

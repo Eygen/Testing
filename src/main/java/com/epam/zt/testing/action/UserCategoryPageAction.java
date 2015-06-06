@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class PageUserCategoryAction implements Action {
+public class UserCategoryPageAction implements Action {
     private ActionResult userCategory = new ActionResult("userCategory?page=1", true);
 
     @Override
