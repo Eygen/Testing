@@ -2,10 +2,7 @@ package com.epam.zt.testing.service;
 
 import com.epam.zt.testing.dao.DaoFactory;
 import com.epam.zt.testing.dao.TestDao;
-import com.epam.zt.testing.model.Student;
-import com.epam.zt.testing.model.Subject;
-import com.epam.zt.testing.model.Test;
-import com.epam.zt.testing.model.Tutor;
+import com.epam.zt.testing.model.*;
 
 import java.util.List;
 
@@ -116,6 +113,18 @@ public class TestService {
         DaoFactory factory = DaoFactory.getInstance(JDBC);
         TestDao testDao = factory.getTestDao();
         List<Test> tests = testDao.findPassedTests(student);
+        for (Test test : tests) {
+            Mark mark = MarkService.findMark(student, test);
+            test.setMark(mark);
+        }
+        testDao.close();
+        return tests;
+    }
+
+    public static List<Test> findSublist(int rowcount, int firstrow) {
+        DaoFactory factory = DaoFactory.getInstance(JDBC);
+        TestDao testDao = factory.getTestDao();
+        List<Test> tests = testDao.findSublist(rowcount, firstrow);
         testDao.close();
         return tests;
     }

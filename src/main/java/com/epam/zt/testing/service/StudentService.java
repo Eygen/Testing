@@ -4,6 +4,7 @@ import com.epam.zt.testing.dao.DaoFactory;
 import com.epam.zt.testing.dao.StudentDao;
 import com.epam.zt.testing.model.Group;
 import com.epam.zt.testing.model.Student;
+import com.epam.zt.testing.model.User;
 
 import java.util.List;
 
@@ -51,10 +52,49 @@ public class StudentService {
         return students;
     }
 
-    public static Student findByName(String lastname, String firstname) {
+    public static List<Student> findByName(String lastname, String firstname) {
         DaoFactory factory = DaoFactory.getInstance(JDBC);
         StudentDao studentDao = factory.getStudentDao();
-        Student student = studentDao.findByName(lastname, firstname);
+        List<Student> students = studentDao.findByName(lastname, firstname);
+        studentDao.close();
+        return students;
+    }
+
+    public static void removeGroup(User user) {
+        DaoFactory factory = DaoFactory.getInstance(JDBC);
+        StudentDao studentDao = factory.getStudentDao();
+        studentDao.removeGroup(user.getId());
+        studentDao.close();
+    }
+
+    public static List<Student> findByLastname(String lastName) {
+        DaoFactory factory = DaoFactory.getInstance(JDBC);
+        StudentDao studentDao = factory.getStudentDao();
+        List<Student> students = studentDao.findByLastname(lastName);
+        studentDao.close();
+        return students;
+    }
+
+    public static List<Student> findByFirstname(String firstName) {
+        DaoFactory factory = DaoFactory.getInstance(JDBC);
+        StudentDao studentDao = factory.getStudentDao();
+        List<Student> students = studentDao.findByFirstname(firstName);
+        studentDao.close();
+        return students;
+    }
+
+    public static Student findById(int id) {
+        DaoFactory factory = DaoFactory.getInstance(JDBC);
+        StudentDao studentDao = factory.getStudentDao();
+        Student student = studentDao.findById(id);
+        studentDao.close();
+        return student;
+    }
+
+    public static Student findByFullName(String lastName, String firstName) {
+        DaoFactory factory = DaoFactory.getInstance(JDBC);
+        StudentDao studentDao = factory.getStudentDao();
+        Student student = studentDao.findByFullName(lastName, firstName);
         studentDao.close();
         return student;
     }

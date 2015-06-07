@@ -19,7 +19,7 @@ public class GroupAssignTestAction implements Action {
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
         Test test = (Test) req.getSession().getAttribute("test");
         String groupName = req.getParameter("group");
-        Group group = GroupService.findByName(groupName);
+        Group group = GroupService.findByFullName(groupName);
         List<Student> students = StudentService.findByGroup(group);
         if (students.size() == 0) {
             req.setAttribute("assignError", "Group doesn't have students!");

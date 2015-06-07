@@ -16,7 +16,7 @@ public class FindStudentForAssignAction implements Action {
         Test test = (Test) req.getSession().getAttribute("test");
         String lastName = req.getParameter("last_name");
         String firstName = req.getParameter("first_name");
-        Student student = StudentService.findByName(lastName, firstName);
+        Student student = StudentService.findByFullName(lastName, firstName);
         if (student == null) {
             req.setAttribute("found", "no_user");
             return assignTest;

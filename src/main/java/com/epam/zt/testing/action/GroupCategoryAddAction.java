@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class GroupCategoryAddAction implements Action {
-    private ActionResult groupCategory = new ActionResult("groupCategory");
+    private ActionResult groupCategory = new ActionResult("groupCategory?addSuccess=1", true);
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -15,7 +15,6 @@ public class GroupCategoryAddAction implements Action {
         Group group = new Group();
         group.setName(groupName);
         GroupService.createGroup(group);
-        req.setAttribute("addSuccess", "Group successfully created!");
         return groupCategory;
     }
 }

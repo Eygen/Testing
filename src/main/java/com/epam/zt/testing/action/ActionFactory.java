@@ -37,7 +37,7 @@ public class ActionFactory {
         actions.put("POST/assignStudentTest", new StudentAssignTestAction());
         actions.put("POST/findStudent", new FindStudentForAssignAction());
         actions.put("POST/blockTest", new BlockTestAction());
-        actions.put("GET/testResults", new ShowPageAction("testResults"));
+        actions.put("GET/testResults", new GetTestResultsAction());
         actions.put("POST/findTestResults", new FindTestResultsAction());
         actions.put("GET/viewTestResults", new ViewTestResultTutorAction());
 
@@ -50,7 +50,9 @@ public class ActionFactory {
         actions.put("POST/userCategoryFind", new UserCategoryFindAction());
         actions.put("POST/userCategoryChangeRole", new UserCategoryChangeRoleAction());
         actions.put("POST/userCategoryDelete", new UserCategoryDeleteAction());
-        actions.put("GET/groupCategory", new ShowPageAction("groupCategory"));
+        actions.put("GET/groupCategory", new GetGroupCategoryAction());
+        actions.put("GET/pageGroupCategory", new GroupCategoryPageAction());
+        actions.put("GET/groupDetails", new GroupCategoryDetailsAction());
         actions.put("POST/groupCategoryFind", new GroupCategoryFindAction());
         actions.put("POST/groupCategoryDelete", new GroupCategoryDeleteAction());
         actions.put("POST/groupCategoryAdd", new GroupCategoryAddAction());

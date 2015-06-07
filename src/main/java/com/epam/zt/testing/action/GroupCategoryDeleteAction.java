@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class GroupCategoryDeleteAction implements Action {
-    private ActionResult groupCategory = new ActionResult("groupCategory");
+    private ActionResult groupCategory = new ActionResult("groupCategory?delete=1", true);
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {

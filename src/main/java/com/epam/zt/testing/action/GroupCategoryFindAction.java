@@ -5,6 +5,7 @@ import com.epam.zt.testing.service.GroupService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public class GroupCategoryFindAction implements Action {
     private ActionResult groupCategory = new ActionResult("groupCategory");
@@ -12,12 +13,20 @@ public class GroupCategoryFindAction implements Action {
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
         String groupName = req.getParameter("groupName");
-        Group group = GroupService.findByName(groupName);
-        if (group == null) {
+        List<Group> groups = GroupService.findByName(groupName);
+        if (groups.size() == 0) {
             req.setAttribute("found", "not_found");
             return groupCategory;
         }
-        req.getSession().setAttribute("foundGroup", group);
+        if (groups.size() == 1) {
+            Group group = groups.get(0);
+            req.setAttribute("menu", 1);
+            req.getSession().setAttribute("foundGroup", group);
+            if (group.getStudents().size() > 0) {
+                req.setAttribute("noDelete", 1);
+            }
+        }
+        req.getSession().setAttribute("foundGroups", groups);
         req.setAttribute("found", "found");
         return groupCategory;
     }

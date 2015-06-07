@@ -83,6 +83,8 @@ public class QuestionService {
             List<Question> questions = questionDao.findStudentResult(student, tutorTest);
             if (questions.size() != 0) {
                 tutorTest.setQuestions(questions);
+                tutorTest.setStudent(student);
+                tutorTest.setAuthor(tutor);
                 passedTests.add(tutorTest);
             }
         }

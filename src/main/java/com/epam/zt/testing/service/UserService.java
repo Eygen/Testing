@@ -38,6 +38,11 @@ public class UserService {
     public static void changeRole(User user) {
         DaoFactory factory = DaoFactory.getInstance(JDBC);
         UserDao userDao = factory.getUserDao();
+        User oldUser = userDao.findById(user.getId());
+        String oldRole = oldUser.getRole().getName();
+        if (oldRole.equals("student")) {
+            StudentService.removeGroup(user);
+        }
         userDao.update(user);
         userDao.close();
     }

@@ -39,6 +39,7 @@ public class JdbcTestDao extends JdbcBaseDao<Test> implements TestDao {
     private static final String FIND_STUDENT_TEST = "SELECT * FROM STUDENT_TEST WHERE student_id = ? AND test_id = ?";
     private static final String FIND_ACTIVE_TEST = FIND_STUDENT_TEST + " AND active = TRUE";
     private static final String DELETE_PASSED_TEST = "DELETE FROM STUDENT_TEST WHERE student_id = ? AND test_id = ?";
+    private static final String FIND_SUBLIST = FIND + " ORDER BY id LIMIT ? OFFSET ?";
 
     public JdbcTestDao(Connection connection) {
         super(connection);
@@ -74,12 +75,12 @@ public class JdbcTestDao extends JdbcBaseDao<Test> implements TestDao {
     public Test parseResult(ResultSet result) {
         Test test;
         try {
-            test = new Test((UUID) result.getObject("uuid"));
-            test.setId(result.getInt("id"));
-            Subject subject = SubjectService.findById(result.getInt("subject_id"));
+            test = new Test((UUID) result.getObject("test.uuid"));
+            test.setId(result.getInt("test.id"));
+            Subject subject = SubjectService.findById(result.getInt("test.subject_id"));
             test.setSubject(subject);
-            test.setQuestionAmount(result.getInt("question_amount"));
-            Tutor tutor = TutorService.findById(result.getInt("author_id"));
+            test.setQuestionAmount(result.getInt("test.question_amount"));
+            Tutor tutor = TutorService.findById(result.getInt("test.author_id"));
             test.setAuthor(tutor);
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -154,14 +155,8 @@ public class JdbcTestDao extends JdbcBaseDao<Test> implements TestDao {
             statement.setInt(1, student.getId());
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                Test test = new Test((UUID) result.getObject("test.uuid"));
-                test.setId(result.getInt("test.id"));
-                Subject subject = SubjectService.findById(result.getInt("test.subject_id"));
-                test.setSubject(subject);
-                test.setQuestionAmount(result.getInt("test.question_amount"));
-                Tutor tutor = TutorService.findById(result.getInt("test.author_id"));
+                Test test = parseResult(result);
                 test.setStudent(student);
-                test.setAuthor(tutor);
                 test.setActive(result.getBoolean("student_test.active"));
                 tests.add(test);
             }
@@ -316,6 +311,25 @@ public class JdbcTestDao extends JdbcBaseDao<Test> implements TestDao {
             }
             return tests;
         }
+
+    @Override
+    public List<Test> findSublist(int rowcount, int firstrow) throws DaoException {
+        List<Test> tests = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(FIND_SUBLIST);
+            statement.setInt(1, rowcount);
+            statement.setInt(2, firstrow);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                tests.add(parseResult(result));
+            }
+            result.close();
+            statement.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return tests;
+    }
 
 
 }

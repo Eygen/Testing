@@ -26,7 +26,7 @@ public class JdbcSubjectDao extends JdbcBaseDao<Subject> implements SubjectDao {
     private static final String UPDATE = "UPDATE SUBJECT SET name = ? WHERE id = ?";
     private static final String CREATE = "INSERT INTO SUBJECT VALUES(DEFAULT, ?, ?, ?)";
     private static final String FIND_BY_FULLNAME = FIND + " WHERE name = ?";
-    private static final String FIND_SUBLIST = "SELECT * FROM SUBJECT ORDER BY id LIMIT ? OFFSET ?";
+    private static final String FIND_SUBLIST = FIND + " ORDER BY id LIMIT ? OFFSET ?";
 
     public JdbcSubjectDao(Connection connection) {
         super(connection);

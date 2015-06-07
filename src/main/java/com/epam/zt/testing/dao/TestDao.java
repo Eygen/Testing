@@ -32,4 +32,6 @@ public interface TestDao extends Dao<Test> {
     void deletePassedTest(Student student, Test test) throws DaoException;
 
     List<Test> findPassedTests(Student student) throws DaoException;
+
+    List<Test> findSublist(int rowcount, int firstrow) throws DaoException;
 }

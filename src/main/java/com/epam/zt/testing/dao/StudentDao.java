@@ -11,5 +11,13 @@ public interface StudentDao extends Dao<Student> {
 
     List<Student> findByGroup(Group group) throws DaoException;
 
-    Student findByName(String lastname, String firstname) throws DaoException;
+    List<Student> findByName(String lastname, String firstname) throws DaoException;
+
+    void removeGroup(int id) throws DaoException;
+
+    List<Student> findByLastname(String lastName) throws DaoException;
+
+    List<Student> findByFirstname(String firstName) throws DaoException;
+
+    Student findByFullName(String lastName, String firstName) throws DaoException;
 }

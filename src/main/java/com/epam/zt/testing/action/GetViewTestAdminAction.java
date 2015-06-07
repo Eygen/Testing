@@ -11,6 +11,7 @@ import java.util.List;
 
 public class GetViewTestAdminAction implements Action {
     private ActionResult view = new ActionResult("viewTest");
+
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
         String id = req.getParameter("test_id");

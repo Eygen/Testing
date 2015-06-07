@@ -20,13 +20,17 @@ import static com.epam.zt.testing.dao.Jdbc.SecureUtil.passwordToMd5;
 public class JdbcStudentDao extends JdbcBaseDao<Student> implements StudentDao {
     private static final Logger logger = LoggerFactory.getLogger(JdbcStudentDao.class);
     private static final String FIND = "SELECT * FROM USER WHERE role_id = (SELECT id FROM ROLE WHERE name = 'student') AND deleted = FALSE";
+    private static final String FIND_BY_GROUP = FIND + " AND group_id = ?";
     public static final String FIND_ALL = FIND + " ORDER BY id";
     public static final String FIND_BY_ID = FIND + " AND id = ?";
     public static final String FIND_BY_LOGIN_PASSWORD = "SELECT * FROM USER WHERE login = ? AND password = ?";
-    private static final String FIND_BY_NAME = FIND + " AND lastname = ? AND firstname = ?";
+    private static final String FIND_BY_NAME = FIND + " AND UPPER(LASTNAME) LIKE UPPER(?) AND UPPER(FIRSTNAME) LIKE UPPER(?)";
+    private static final String FIND_BY_FIRSTNAME = FIND + " AND UPPER(firstname) LIKE UPPER(?)";
+    private static final String FIND_BY_LASTNAME = FIND + " AND UPPER(lastname) LIKE UPPER(?)";
     public static final String CREATE = "INSERT INTO USER VALUES (DEFAULT, ?, FALSE, ?, ?, ?, ?, ?, ?, ?, ?)";
     public static final String UPDATE = "UPDATE USER SET firstname = ?, lastname = ?, email = ?, password = ?, group_id = ? WHERE id = ?";
     public static final String DELETE = "UPDATE USER SET deleted = TRUE WHERE id = ?";
+    private static final String REMOVE_GROUP = "UPDATE USER SET group_id = NULL WHERE id = ?";
 
     public JdbcStudentDao(Connection connection) {
         super(connection);
@@ -140,8 +144,34 @@ public class JdbcStudentDao extends JdbcBaseDao<Student> implements StudentDao {
     public List<Student> findByGroup(Group group) throws DaoException {
         List<Student> students = new ArrayList<>();
         try {
-            PreparedStatement statement = connection.prepareStatement(FIND + " AND group_id = ?");
+            PreparedStatement statement = connection.prepareStatement(FIND_BY_GROUP);
             statement.setInt(1, group.getId());
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                Student student = new Student((UUID) result.getObject("uuid"));
+                student.setId(result.getInt("id"));
+                student.setFirstName(result.getString("firstname"));
+                student.setLastName(result.getString("lastname"));
+                student.setGroup(group);
+                students.add(student);
+            }
+            result.close();
+            statement.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return students;
+    }
+
+    @Override
+    public List<Student> findByName(String lastname, String firstname) throws DaoException {
+        List<Student> students = new ArrayList<>();
+        try {
+            lastname = "%" + lastname + "%";
+            firstname = "%" + firstname + "%";
+            PreparedStatement statement = connection.prepareStatement(FIND_BY_NAME);
+            statement.setString(1, lastname);
+            statement.setString(2, firstname);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 students.add(parseResult(result));
@@ -155,12 +185,62 @@ public class JdbcStudentDao extends JdbcBaseDao<Student> implements StudentDao {
     }
 
     @Override
-    public Student findByName(String lastname, String firstname) throws DaoException {
+    public void removeGroup(int id) throws DaoException {
+        try {
+            PreparedStatement statement = connection.prepareStatement(REMOVE_GROUP);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<Student> findByLastname(String lastName) throws DaoException {
+        List<Student> students = new ArrayList<>();
+        try {
+            lastName = "%" + lastName + "%";
+            PreparedStatement statement = connection.prepareStatement(FIND_BY_LASTNAME);
+            statement.setString(1, lastName);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                students.add(parseResult(result));
+            }
+            result.close();
+            statement.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return students;
+    }
+
+    @Override
+    public List<Student> findByFirstname(String firstName) throws DaoException {
+        List<Student> students = new ArrayList<>();
+        try {
+            firstName = "%" + firstName + "%";
+            PreparedStatement statement = connection.prepareStatement(FIND_BY_FIRSTNAME);
+            statement.setString(1, firstName);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                students.add(parseResult(result));
+            }
+            result.close();
+            statement.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return students;
+    }
+
+    @Override
+    public Student findByFullName(String lastName, String firstName) throws DaoException {
         Student student = null;
         try {
-            PreparedStatement statement = connection.prepareStatement(FIND_BY_NAME);
-            statement.setString(1, lastname);
-            statement.setString(2, firstname);
+            PreparedStatement statement = connection.prepareStatement(FIND + " AND lastname = ? AND firstname = ?");
+            statement.setString(1, lastName);
+            statement.setString(2, firstName);
             ResultSet result = statement.executeQuery();
             if (result.next()) {
                 student = parseResult(result);

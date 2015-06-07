@@ -51,7 +51,7 @@ public class PostUpdateStudentAction implements Action {
             i = 0;
             req.setAttribute("groupError", "Group must be specified!");
         } else if (oldGroup == null || !oldGroup.getName().equals(group)) {
-            Group newGroup = GroupService.findByName(group);
+            Group newGroup = GroupService.findByFullName(group);
             student.setGroup(newGroup);
             i++;
         }

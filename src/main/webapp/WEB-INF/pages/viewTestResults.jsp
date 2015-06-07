@@ -1,20 +1,22 @@
 <%--@elvariable id="foundStudent" type="com.epam.zt.testing.model.Student"--%>
 <%--@elvariable id="passedTest" type="com.epam.zt.testing.model.test"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<fmt:setBundle basename="messages"/>
 <head>
     <link href="../../lib/bootstrap/css/cerulean-bootstrap.min.css" rel="stylesheet"/>
     <link href="../../lib/css/editTest.css" rel="stylesheet"/>
     <script src="../../lib/bootstrap/jquery-1.11.3.min.js"></script>
     <script src="../../lib/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <title>Testing - View Test</title>
+    <title><fmt:message key="title"/> - <fmt:message key="view_test"/> </title>
 </head>
 <body>
 <c:import url="adminMainMenu.jsp"/>
 <div class="container">
     <div class="page-header">
-        <h1>View Test</h1>
+        <h1><fmt:message key="view_test"/></h1>
 
         <p class="lead">${foundStudent.lastName} ${foundStudent.firstName}</p>
     </div>

@@ -7,6 +7,7 @@ import com.epam.zt.testing.service.TestService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestCategoryFindBySubjectAction implements Action {
@@ -15,12 +16,18 @@ public class TestCategoryFindBySubjectAction implements Action {
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
         String subjectName = req.getParameter("subjectName");
-        Subject subject = SubjectService.findByFullName(subjectName);
-        if (subject == null) {
-            req.setAttribute("subjectError", "No such subject!");
+        List<Subject> subjects = SubjectService.findByName(subjectName);
+        if (subjects.size() == 0) {
+            req.setAttribute("subjectError", 1);
             return testCategory;
         }
-        List<Test> tests = TestService.findBySubject(subject);
+        List<Test> tests = new ArrayList<>();
+        for (Subject subject : subjects) {
+            List<Test> foundTests = TestService.findBySubject(subject);
+            for (Test foundTest : foundTests) {
+                tests.add(foundTest);
+            }
+        }
         if (tests.size() == 0) {
             req.setAttribute("foundBySubject", "not_found");
             return testCategory;

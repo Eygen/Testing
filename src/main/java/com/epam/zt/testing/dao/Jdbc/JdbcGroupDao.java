@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class JdbcGroupDao extends JdbcBaseDao<Group> implements GroupDao {
@@ -20,8 +22,9 @@ public class JdbcGroupDao extends JdbcBaseDao<Group> implements GroupDao {
     private static final String DELETE = "UPDATE GROUP_TABLE SET deleted = TRUE WHERE id = ?";
     private static final String UPDATE = "UPDATE GROUP_TABLE SET name = ? WHERE id = ?";
     private static final String CREATE = "INSERT INTO GROUP_TABLE VALUES(DEFAULT, ?, FALSE, ?)";
-    private static final String FIND_BY_NAME = FIND + " AND name = ?";
-
+    private static final String FIND_BY_NAME = FIND + " AND UPPER(NAME) LIKE UPPER(?)";
+    private static final String FIND_SUBLIST = FIND + " ORDER BY id LIMIT ? OFFSET ?";
+    private static final String FIND_BY_FULL_NAME = FIND + " AND name = ?";
 
     public JdbcGroupDao(Connection connection) {
         super(connection);
@@ -88,11 +91,49 @@ public class JdbcGroupDao extends JdbcBaseDao<Group> implements GroupDao {
     }
 
     @Override
-    public Group findByName(String groupName) {
-        Group group = null;
+    public List<Group> findByName(String groupName) {
+        List<Group> groups = new ArrayList<>();
         try {
+            groupName = "%" + groupName + "%";
             PreparedStatement statement = connection.prepareStatement(FIND_BY_NAME);
             statement.setString(1, groupName);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                groups.add(parseResult(result));
+            }
+            result.close();
+            statement.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return groups;
+    }
+
+    @Override
+    public List<Group> findSublist(int rowcount, int firstrow) throws DaoException {
+        List<Group> groups = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(FIND_SUBLIST);
+            statement.setInt(1, rowcount);
+            statement.setInt(2, firstrow);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                groups.add(parseResult(result));
+            }
+            result.close();
+            statement.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return groups;
+    }
+
+    @Override
+    public Group findByFullName(String name) throws DaoException {
+        Group group = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement(FIND_BY_FULL_NAME);
+            statement.setString(1, name);
             ResultSet result = statement.executeQuery();
             if (result.next()) {
                 group = parseResult(result);
