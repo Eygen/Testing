@@ -57,4 +57,12 @@ public class MarkService {
         markDao.close();
         return mark;
     }
+
+    public static List<Mark> findSublist(Student student, int rowcount, int firstrow) {
+        DaoFactory factory = DaoFactory.getInstance(JDBC);
+        MarkDao markDao = factory.getMarkDao();
+        List<Mark> marks = markDao.findSublist(student, rowcount, firstrow);
+        markDao.close();
+        return marks;
+    }
 }

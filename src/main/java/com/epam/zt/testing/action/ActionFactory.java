@@ -22,6 +22,8 @@ public class ActionFactory {
         actions.put("GET/passTest", new GetPassTestAction());
         actions.put("POST/passTest", new PostPassTestAction());
         actions.put("GET/finishTest", new FinishTestAction());
+        actions.put("GET/viewMark", new ViewMarkAction());
+        actions.put("GET/pageMark", new MarkPageAction());
 
         actions.put("GET/tutorHome", new GetHomeTutorAction());
         actions.put("GET/tutorSettings", new GetUpdateTutorAction());
@@ -33,6 +35,7 @@ public class ActionFactory {
         actions.put("GET/editTest", new GetEditTestTutorAction());
         actions.put("POST/editTest", new PostEditTestTutorAction());
         actions.put("GET/assignTest", new GetAssignTestAction());
+        actions.put("GET/studentDetails", new StudentDetailsAction());
         actions.put("POST/assignGroupTest", new GroupAssignTestAction());
         actions.put("POST/assignStudentTest", new StudentAssignTestAction());
         actions.put("POST/findStudent", new FindStudentForAssignAction());

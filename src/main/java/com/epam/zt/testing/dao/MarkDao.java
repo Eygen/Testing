@@ -13,4 +13,6 @@ public interface MarkDao extends Dao<Mark> {
     Mark findByUuid(UUID uuid) throws DaoException;
 
     Mark findMark(Student student, Test test) throws DaoException;
+
+    List<Mark> findSublist(Student student, int rowcount, int firstrow) throws DaoException;
 }

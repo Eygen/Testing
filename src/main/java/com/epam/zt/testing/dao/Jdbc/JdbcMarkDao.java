@@ -24,6 +24,7 @@ public class JdbcMarkDao extends JdbcBaseDao<Mark> implements MarkDao {
     private static final String DELETE = "DELETE FROM MARK WHERE id = ?";
     private static final String UPDATE = "UPDATE MARK SET value = ? WHERE id = ?";
     private static final String CREATE = "INSERT INTO MARK VALUES(DEFAULT, ?, ?, ?, ?)";
+    private static final String FIND_SUBLIST = FIND + " WHERE student_id = ? ORDER BY id LIMIT ? OFFSET ?";
 
     public JdbcMarkDao(Connection connection) {
         super(connection);
@@ -143,5 +144,25 @@ public class JdbcMarkDao extends JdbcBaseDao<Mark> implements MarkDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+    }
+
+    @Override
+    public List<Mark> findSublist(Student student, int rowcount, int firstrow) throws DaoException {
+        List<Mark> marks = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(FIND_SUBLIST);
+            statement.setInt(1, student.getId());
+            statement.setInt(2, rowcount);
+            statement.setInt(3, firstrow);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                marks.add(parseResult(result));
+            }
+            result.close();
+            statement.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return marks;
     }
 }
