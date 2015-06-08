@@ -8,14 +8,13 @@
     <link href="../../lib/bootstrap/css/cerulean-bootstrap.min.css" rel="stylesheet"/>
     <script src="../../lib/bootstrap/jquery-1.11.3.min.js"></script>
     <script src="../../lib/bootstrap/js/bootstrap.min.js"></script>
-    <title>Testing - Pass Test</title>
+    <title><fmt:message key="title"/> - <fmt:message key="pass_test"/> </title>
 </head>
 <body>
 <c:import url="studentMainMenu.jsp"/>
 <div class="container">
     <div align="center" style="margin: 150px 200px;">
-        <h3>Тест состоит из ${passTest.questionAmount} вопросов. Время прохождения теста 40 минут. В каждом вопросе только
-            один верный ответ. Вы готовы начать?</h3>
+        <h3><fmt:message key="test_content"/> ${passTest.questionAmount} <fmt:message key="test_description"/> </h3>
         <br/>
 
         <form role="form"

@@ -1,7 +1,9 @@
 <%--@elvariable id="user" type="com.epam.zt.testing.model.Tutor"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<fmt:setBundle basename="messages"/>
 <head>
     <link href="../../lib/bootstrap/css/cerulean-bootstrap.min.css" rel="stylesheet"/>
     <link href="../../lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
@@ -19,26 +21,24 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand"
-               href="<c:url value = '${pageContext.request.contextPath}/testing/tutorHome' />">Testing</a>
+               href="<c:url value = '${pageContext.request.contextPath}/testing/tutorHome' />"><fmt:message key="title"/> </a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="activate"><a
-                        href="<c:url value = '${pageContext.request.contextPath}/testing/tutorHome' />"> Home </a>
+                        href="<c:url value = '${pageContext.request.contextPath}/testing/tutorHome' />"> <fmt:message key="home"/> </a>
                 </li>
                 <li>
                     <ul class="nav navbar-nav">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Actions <b
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <fmt:message key="actions"/> <b
                                     class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="<c:url value = '${pageContext.request.contextPath}/testing/createTest' />">Create
-                                        test</a>
+                                    <a href="<c:url value = '${pageContext.request.contextPath}/testing/createTest' />"><fmt:message key="create_test"/> </a>
                                 </li>
                                 <li>
-                                    <a href="<c:url value = '${pageContext.request.contextPath}/testing/testResults' />">View
-                                        results</a>
+                                    <a href="<c:url value = '${pageContext.request.contextPath}/testing/testResults' />"><fmt:message key="view_result"/> </a>
                                 </li>
                             </ul>
                         </li>
@@ -53,12 +53,12 @@
                     <ul class="dropdown-menu">
                         <li>
                             <a href="<c:url value = '${pageContext.request.contextPath}/testing/tutorSettings' />"><i
-                                    class="fa fa-fw fa-gear"></i> Settings</a>
+                                    class="fa fa-fw fa-gear"></i> <fmt:message key="settings"/> </a>
                         </li>
                         <li class="divider"></li>
                         <li>
                             <a href="<c:url value = '${pageContext.request.contextPath}/testing/logout' />"><i
-                                    class="fa fa-fw fa-power-off"></i> Log Out</a>
+                                    class="fa fa-fw fa-power-off"></i> <fmt:message key="log_out"/> </a>
                         </li>
                     </ul>
                 </li>

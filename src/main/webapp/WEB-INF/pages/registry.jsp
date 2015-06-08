@@ -6,14 +6,16 @@
 <%--@elvariable id="loginError" type="com.epam.zt.testing.action.registryaction"--%>
 <%--@elvariable id="passwordError" type="com.epam.zt.testing.action.registryaction"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<fmt:setBundle basename="messages"/>
 <head>
     <link href="../../lib/bootstrap/css/cerulean-bootstrap.min.css" rel="stylesheet"/>
     <link href="../../lib/css/registry.css" rel="stylesheet"/>
     <script src="../../lib/bootstrap/jquery-1.11.3.min.js"></script>
     <script src="../../lib/bootstrap/js/bootstrap.min.js"></script>
-    <title>Testing - Registration</title>
+    <title><fmt:message key="title"/> - <fmt:message key="registration"/> </title>
 </head>
 <body>
 <div class="container">
@@ -21,7 +23,7 @@
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
             <form role="form" action="<c:url value='${pageContext.request.contextPath}/testing/registry' />"
                   method="post">
-                <h2>Please Sign Up</h2>
+                <h2><fmt:message key="sign_up"/> </h2>
                 <hr class="colorgraph">
 
                 <div class="row">
@@ -62,8 +64,7 @@
                         </div>
                         <div class="error">${confirmError}</div>
                     </div>
-                    <p>Пароль должен быть не менее 8 символов. Должен состоять из заглавных и прописных латинских букв,
-                        цифр и спецсимволов.</p>
+                    <p><fmt:message key="password_description"/> </p>
                 </div>
 
                 <hr class="colorgraph">
