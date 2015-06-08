@@ -26,4 +26,6 @@ public interface QuestionDao extends Dao<Question> {
     Answer findAnswer(int id) throws DaoException;
 
     void createStudentResult(Student student, Test test, Question question, Answer answer) throws DaoException;
+
+    void updateAnswer(Answer answer) throws DaoException;
 }

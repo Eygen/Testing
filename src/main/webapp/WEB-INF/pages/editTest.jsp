@@ -54,6 +54,7 @@
                             </ul>
                             <c:set var="number" value="${number+1}"/>
                         </div>
+                        <a href="<c:url value = '${pageContext.request.contextPath}/testing/testEditor?question_id=${question.id}' />" class="btn btn-primary"><fmt:message key="edit"/> </a>
                     </c:forEach>
                 </div>
             </c:otherwise>

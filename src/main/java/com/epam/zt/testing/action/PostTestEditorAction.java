@@ -12,7 +12,8 @@ import java.util.List;
 
 public class PostTestEditorAction implements Action {
     private ActionResult editor = new ActionResult("testEditor", true);
-    //private ActionResult success = new ActionResult("createTest", true);
+    //    private ActionResult home = new ActionResult("tutorHome", true);
+    private ActionResult back = new ActionResult("editTest", true);
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -31,7 +32,24 @@ public class PostTestEditorAction implements Action {
         addToList(answers, test, thirdAnswerText, false);
         addToList(answers, test, fourthAnswerText, false);
         question.setAnswers(answers);
-        QuestionService.createQuestion(question);
+
+        Question editQuestion = (Question) req.getSession().getAttribute("editQuestion");
+        if (editQuestion == null) {
+            QuestionService.createQuestion(question);
+        } else {
+            editQuestion.setDescription(questionText);
+            List<Answer> editAnswers = editQuestion.getAnswers();
+            editAnswers.get(0).setDescription(firstAnswerText);
+            editAnswers.get(1).setDescription(secondAnswerText);
+            editAnswers.get(2).setDescription(thirdAnswerText);
+            editAnswers.get(3).setDescription(fourthAnswerText);
+
+            editQuestion.setAnswers(editAnswers);
+            QuestionService.updateQuestion(editQuestion);
+            req.getSession().setAttribute("editQuestion", "");
+            req.getSession().setAttribute("test", test);
+            return back;
+        }
         return editor;
     }
 

@@ -14,8 +14,13 @@ public class GetEditTestTutorAction implements Action {
 
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
-        String id = req.getParameter("test_id");
-        Test test = TestService.findById(Integer.parseInt(id));
+        Test test;
+        if (req.getParameter("test_id") == null) {
+            test = (Test) req.getSession().getAttribute("test");
+        } else {
+            String id = req.getParameter("test_id");
+            test = TestService.findById(Integer.parseInt(id));
+        }
         List<Question> questions = QuestionService.getQuestions(test);
         if (questions.size() == 0) {
             req.setAttribute("emptyQuestions", "empty");

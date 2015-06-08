@@ -26,7 +26,8 @@ public class JdbcQuestionDao extends JdbcBaseDao<Question> implements QuestionDa
     private static final String FIND_BY_TEST = FIND + " WHERE test_id = ?";
     private static final String DELETE_QUESTION = "DELETE FROM QUESTION WHERE test_id = ?";
     private static final String DELETE_ANSWER = "DELETE FROM ANSWER WHERE test_id = ?";
-    private static final String UPDATE = "UPDATE QUESTION SET description = ? WHERE id = ?";
+    private static final String UPDATE_QUESTION = "UPDATE QUESTION SET description = ? WHERE id = ?";
+    private static final String UPDATE_ANSWER= "UPDATE ANSWER SET description = ? WHERE id = ?";
     private static final String CREATE_QUESTION = "INSERT INTO QUESTION VALUES(DEFAULT, ?, ?, ?)";
     private static final String CREATE_ANSWER = "INSERT INTO ANSWER VALUES(DEFAULT, ?, ?, ?, ?, ?)";
     private static final String FIND_BY_UUID = "SELECT * FROM QUESTION WHERE uuid = ?";
@@ -57,7 +58,7 @@ public class JdbcQuestionDao extends JdbcBaseDao<Question> implements QuestionDa
 
     @Override
     public String getUpdateQuery() {
-        return UPDATE;
+        return UPDATE_QUESTION;
     }
 
     @Override
@@ -87,7 +88,7 @@ public class JdbcQuestionDao extends JdbcBaseDao<Question> implements QuestionDa
             answer.setId(result.getInt("answer.id"));
             Question question = findById(result.getInt("answer.question_id"));
             answer.setQuestion(question);
-            answer.setTest(TestService.findById(result.getInt("test_id")));
+            answer.setTest(TestService.findById(result.getInt("answer.test_id")));
             answer.setDescription(result.getString("answer.description"));
             answer.setCorrect(result.getBoolean("answer.correct"));
         } catch (SQLException e) {
@@ -239,6 +240,23 @@ public class JdbcQuestionDao extends JdbcBaseDao<Question> implements QuestionDa
             statement.executeUpdate();
             statement.close();
             logger.info("Student {} passed test {}", student, test);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public void updateAnswer(Answer answer) throws DaoException {
+        try {
+            PreparedStatement statement = connection.prepareStatement(UPDATE_ANSWER);
+            statement.setString(1, answer.getDescription());
+            statement.setInt(2, answer.getId());
+            int count = statement.executeUpdate();
+            if (count != 1) {
+                throw new DaoException("Updated more than one object: " + count);
+            }
+            logger.info("Object is updated " + answer);
+            statement.close();
         } catch (SQLException e) {
             throw new DaoException(e);
         }

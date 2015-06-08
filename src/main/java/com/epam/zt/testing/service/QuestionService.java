@@ -92,4 +92,24 @@ public class QuestionService {
         return passedTests;
     }
 
+    public static Question findById(int id) {
+        DaoFactory factory = DaoFactory.getInstance(JDBC);
+        QuestionDao questionDao = factory.getQuestionDao();
+        Question question = questionDao.findById(id);
+        List<Answer> answers = questionDao.getAnswers(question);
+        question.setAnswers(answers);
+        questionDao.close();
+        return question;
+    }
+
+    public static void updateQuestion(Question question) {
+        DaoFactory factory = DaoFactory.getInstance(JDBC);
+        QuestionDao questionDao = factory.getQuestionDao();
+        questionDao.update(question);
+        List<Answer> answers = question.getAnswers();
+        for (Answer answer : answers) {
+            questionDao.updateAnswer(answer);
+        }
+        questionDao.close();
+    }
 }
