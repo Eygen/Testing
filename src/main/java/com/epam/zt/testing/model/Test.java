@@ -74,4 +74,11 @@ public class Test extends BaseEntity {
     public void setMark(Mark mark) {
         this.mark = mark;
     }
+
+    @Override
+    public String toString() {
+        return "Test{" +
+                "subject=" + subject +
+                '}';
+    }
 }

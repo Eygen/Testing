@@ -30,4 +30,10 @@ public class Group extends BaseEntity {
         this.students = students;
     }
 
+    @Override
+    public String toString() {
+        return "Group{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

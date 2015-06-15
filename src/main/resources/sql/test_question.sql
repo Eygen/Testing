@@ -6,7 +6,3 @@ CREATE TABLE TEST_QUESTION (
   PRIMARY KEY (student_id, test_id, question_id)
 );
 
-SELECT *
-FROM QUESTION Q
-  JOIN TEST_QUESTION tq ON Q.ID = tq.QUESTION_ID
-WHERE tq.TEST_ID = 1;

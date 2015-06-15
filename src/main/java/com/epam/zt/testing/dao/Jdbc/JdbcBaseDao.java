@@ -72,6 +72,7 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements Dao<T> {
 
     public boolean delete(T entity) throws DaoException {
         if (findById(entity.getId()) == null) {
+            logger.error("No object for deleting ", entity);
             throw new DaoException("No such object for deleting!");
         }
         try {
@@ -79,6 +80,7 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements Dao<T> {
             statement.setInt(1, entity.getId());
             int result = statement.executeUpdate();
             if (result > 1) {
+                logger.error("Deleted more than one object: ", entity);
                 throw new DaoException("Deleted more than one object: " + result);
             }
             logger.info("Object is deleted " + entity);
@@ -95,8 +97,10 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements Dao<T> {
             prepareForInsert(statement, entity);
             int count = statement.executeUpdate();
             if (count > 1) {
+                logger.error("Created more than one object: ", entity);
                 throw new DaoException("Created more than one object: " + count);
             } else if (count == 0) {
+                logger.error("Object was not created!", entity);
                 throw new DaoException("Object was not created!");
             }
             logger.info("Object is created " + entity);
@@ -113,6 +117,7 @@ public abstract class JdbcBaseDao<T extends BaseEntity> implements Dao<T> {
             prepareForUpdate(statement, entity);
             int count = statement.executeUpdate();
             if (count != 1) {
+                logger.error("Updated more than one object: ", entity);
                 throw new DaoException("Updated more than one object: " + count);
             }
             logger.info("Object is updated " + entity);

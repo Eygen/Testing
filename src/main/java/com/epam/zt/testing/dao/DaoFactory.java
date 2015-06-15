@@ -19,15 +19,13 @@ public abstract class DaoFactory {
         switch (type) {
             case JDBC:
                 return JdbcDaoFactory.getInstance();
-            /*case XML:
-                return null;*/
             default:
                 throw new DaoException("Such type does not exist!");
         }
     }
 
     public enum Type {
-        JDBC, XML
+        JDBC
     }
 
 }

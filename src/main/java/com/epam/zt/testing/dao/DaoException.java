@@ -1,6 +1,7 @@
 package com.epam.zt.testing.dao;
 
 public class DaoException extends RuntimeException {
+
     public DaoException() {
     }
 

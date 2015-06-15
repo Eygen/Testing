@@ -10,7 +10,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 public class ConnectionPool {
-    private static Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
+    private static Logger logger = LoggerFactory.getLogger(ConnectionPool.class.getName());
     private static ConnectionPool instance = new ConnectionPool();
     private DaoProperties properties = new DaoProperties();
     private String url = properties.getProperty("url");
@@ -32,7 +32,7 @@ public class ConnectionPool {
             }
             logger.info("Connection pool created");
         } catch (Exception e) {
-            logger.error("Can not create connection pool");
+            logger.error("Can not create connection pool ", e);
             throw new DaoException("Can not create connection pool ", e);
         }
     }

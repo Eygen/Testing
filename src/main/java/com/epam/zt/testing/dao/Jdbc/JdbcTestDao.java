@@ -191,7 +191,7 @@ public class JdbcTestDao extends JdbcBaseDao<Test> implements TestDao {
             statement.setInt(2, test.getId());
             int count = statement.executeUpdate();
             statement.close();
-            logger.info("Test {} is blocked for {}", test, student);
+            logger.info("Test {} is blocked for student {}", test, student);
             return count != 0;
         } catch (SQLException e) {
             throw new DaoException(e);

@@ -74,24 +74,6 @@ public class ActionFactory {
         actions.put("GET/viewStudentTest", new GetStudentTestAdminAction());
     }
 
-    /*private void init() {
-        try {
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            InputStream fileInput = classLoader.getResourceAsStream("action.xml");
-            Properties properties = new Properties();
-            properties.loadFromXML(fileInput);
-            fileInput.close();
-            Enumeration keys = properties.keys();
-            while (keys.hasMoreElements()) {
-                String key = (String) keys.nextElement();
-                String value = properties.getProperty(key);
-                actions.put(key, (Action) Class.forName(value).newInstance());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
     public Action getAction(String actionName) {
         return actions.get(actionName);
     }

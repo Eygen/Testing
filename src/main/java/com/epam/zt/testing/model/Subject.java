@@ -38,4 +38,12 @@ public class Subject extends BaseEntity {
     public void setTutor(Tutor tutor) {
         this.tutor = tutor;
     }
+
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "name='" + name + '\'' +
+                ", tutor=" + tutor +
+                '}';
+    }
 }

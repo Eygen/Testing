@@ -8,7 +8,7 @@
     <link href="/lib/css/main.css" rel="stylesheet"/>
     <script src="/lib/bootstrap/jquery-1.11.3.min.js"></script>
     <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
-    <title><fmt:message key="title"/></title>
+    <title><fmt:message key="title"/> </title>
 </head>
 <body>
 <nav class="navbar-inverse navbar-default" role="navigation">
@@ -28,9 +28,15 @@
 
 <div class="container">
     <div class="page-header">
-        <h1 class="cover-heading"><fmt:message key="error404"/></h1>
+        <h1 class="cover-heading"><fmt:message key="error"/> ${pageContext.errorData.statusCode}</h1>
 
-        <h2 class="lead"><fmt:message key="no_page"/></h2>
+        <h2 class="lead">${pageContext.exception}</h2>
+    </div>
+    <div class="col-lg-12">
+        <c:forEach var="trace"
+                   items="${pageContext.exception.stackTrace}">
+            <p>${trace}</p>
+        </c:forEach>
     </div>
 </div>
 </body>

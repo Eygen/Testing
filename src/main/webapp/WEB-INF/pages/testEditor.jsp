@@ -79,14 +79,14 @@
         <c:choose>
             <c:when test="${editQuestion==null}">
                 <div class="form-group">
-                    <button type="reset" class="btn btn-danger"><fmt:message key="cancel"/></button>
+                    <button type="reset" class="btn btn-danger"><fmt:message key="reset"/></button>
                     <button type="submit" class="btn btn-success"><fmt:message key="add_question"/></button>
                 </div>
             </c:when>
             <c:otherwise>
                 <div class="form-group">
-                    <button type="reset" class="btn btn-danger"><fmt:message key="cancel"/></button>
-                    <button type="submit" class="btn btn-success"><fmt:message key="edit"/></button>
+                    <button type="reset" class="btn btn-danger"><fmt:message key="reset"/></button>
+                    <button type="submit" class="btn btn-success"><fmt:message key="save"/></button>
                 </div>
             </c:otherwise>
         </c:choose>

@@ -9,7 +9,7 @@
         <session-timeout>30</session-timeout>
     </session-config>
 
-   <!-- <jsp-config>
+    <!--<jsp-config>
         <jsp-property-group>
             <url-pattern>*.jsp</url-pattern>
             <page-encoding>UTF-8</page-encoding>
@@ -54,8 +54,7 @@
     </error-page>
 
     <error-page>
-        <error-code>500</error-code>
-        <location>/500.jsp</location>
+        <location>/error.jsp</location>
     </error-page>
 
 </web-app>

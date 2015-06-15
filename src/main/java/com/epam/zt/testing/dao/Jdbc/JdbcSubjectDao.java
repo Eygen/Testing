@@ -4,8 +4,6 @@ import com.epam.zt.testing.dao.DaoException;
 import com.epam.zt.testing.dao.SubjectDao;
 import com.epam.zt.testing.model.Subject;
 import com.epam.zt.testing.model.Tutor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +14,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class JdbcSubjectDao extends JdbcBaseDao<Subject> implements SubjectDao {
-    private static final Logger logger = LoggerFactory.getLogger(JdbcSubjectDao.class);
     private static final String FIND = "SELECT * FROM SUBJECT";
     private static final String FIND_BY_NAME = FIND + " WHERE UPPER(name) LIKE UPPER(?)";
     private static final String FIND_BY_TUTOR = FIND + " WHERE tutor_id = ?";

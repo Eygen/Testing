@@ -45,8 +45,6 @@ public class Student extends User {
         return "Student{" +
                 "firstname=" + getFirstName() +
                 ", lastname=" + getLastName() +
-                ", tests=" + tests +
-                ", marks=" + marks +
                 ", group=" + group +
                 '}';
     }
